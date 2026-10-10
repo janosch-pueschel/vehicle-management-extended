@@ -1,0 +1,24 @@
+name: vehicleshop-dev
+
+services:
+  postgres:
+    image: postgres:18
+    container_name: vehicleshop-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: vehicleshop
+      POSTGRES_USER: vehicleshop_dev
+      # Local development only — never use real credentials here.
+      POSTGRES_PASSWORD: local_dev_only
+    ports:
+      - "5434:5432"
+    volumes:
+      - vehicleshop-pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vehicleshop_dev -d vehicleshop"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  vehicleshop-pgdata:
