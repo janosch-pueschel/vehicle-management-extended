@@ -1,5 +1,6 @@
 using VehicleManagement.Application.DTOs;
 using VehicleManagement.Application.Interfaces;
+using VehicleManagement.Application.Results;
 using VehicleManagement.Domain.Entities;
 
 namespace VehicleManagement.Application.Services;
@@ -86,5 +87,45 @@ public class VehicleService : IVehicleService
     public Task<bool> DeleteAsync(int id)
     {
         return _vehicleRepository.DeleteAsync(id);
+    }
+
+    public async Task<UpdateVehicleResult> UpdateAsync(int vehicleId, UpdateVehicleDto updateVehicleDto)
+    {
+        var dealershipExists = await _dealershipRepository.DealershipExistsAsync(updateVehicleDto.DealershipId);
+
+        if (!dealershipExists)
+        {
+            return new UpdateVehicleResult(UpdateVehicleStatus.DealershipNotFound);
+        }
+
+        var updatedVehicle = new Vehicle
+        {
+            VehicleId = vehicleId,
+            Brand = updateVehicleDto.Brand,
+            Model = updateVehicleDto.Model,
+            ManufactureYear = updateVehicleDto.ManufactureYear,
+            Mileage = updateVehicleDto.Mileage,
+            Price = updateVehicleDto.Price,
+            DealershipId = updateVehicleDto.DealershipId
+        };
+
+        var vehicle = await _vehicleRepository.UpdateAsync(updatedVehicle);
+
+        if (vehicle is null)
+        {
+            return new UpdateVehicleResult(UpdateVehicleStatus.VehicleNotFound);
+        }
+
+        var storedVehicle = new VehicleDto(
+                    vehicle.VehicleId,
+                    vehicle.Brand,
+                    vehicle.Model,
+                    vehicle.ManufactureYear,
+                    vehicle.Mileage,
+                    vehicle.Price,
+                    vehicle.DealershipId
+                );
+
+        return new UpdateVehicleResult(UpdateVehicleStatus.Success, storedVehicle);
     }
 }

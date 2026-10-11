@@ -42,4 +42,25 @@ public class VehicleRepository : IVehicleRepository
 
         return deletedCount > 0;
     }
+
+    public async Task<Vehicle?> UpdateAsync(Vehicle vehicle)
+    {
+        var existingVehicle = await _context.Vehicles.FindAsync(vehicle.VehicleId);
+
+        if (existingVehicle is null)
+        {
+            return null;
+        }
+
+        existingVehicle.Brand = vehicle.Brand;
+        existingVehicle.Model = vehicle.Model;
+        existingVehicle.ManufactureYear = vehicle.ManufactureYear;
+        existingVehicle.Mileage = vehicle.Mileage;
+        existingVehicle.Price = vehicle.Price;
+        existingVehicle.DealershipId = vehicle.DealershipId;
+
+        await _context.SaveChangesAsync();
+
+        return existingVehicle;
+    }
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VehicleManagement.Application.DTOs;
 using VehicleManagement.Application.Interfaces;
+using VehicleManagement.Application.Results;
 
 [ApiController]
 [Route("api/vehicles")]
@@ -49,7 +50,6 @@ public class VehiclesController : ControllerBase
             return BadRequest("Dealership does not exist.");
         }
 
-
         return CreatedAtAction(
             nameof(GetById),
             new { id = vehicle.VehicleId },
@@ -73,5 +73,29 @@ public class VehiclesController : ControllerBase
         }
 
         return NoContent();
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<VehicleDto?>> Update(int id, UpdateVehicleDto updateVehicleDto)
+    {
+        if (id <= 0)
+        {
+            return BadRequest("Vehicle ID must be greater than zero.");
+        }
+
+        var updateVehicleResult = await _vehicleService.UpdateAsync(id, updateVehicleDto);
+
+        if (updateVehicleResult.Status is UpdateVehicleStatus.DealershipNotFound)
+        {
+            return BadRequest("Dealership does not exist.");
+        }
+
+        if (updateVehicleResult.Status is UpdateVehicleStatus.VehicleNotFound)
+        {
+            return NotFound();
+        }
+
+
+        return Ok(updateVehicleResult.Vehicle);
     }
 }

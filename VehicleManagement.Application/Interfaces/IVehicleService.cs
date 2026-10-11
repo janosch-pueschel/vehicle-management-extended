@@ -1,4 +1,5 @@
 using VehicleManagement.Application.DTOs;
+using VehicleManagement.Application.Results;
 
 namespace VehicleManagement.Application.Interfaces;
 
@@ -8,4 +9,5 @@ public interface IVehicleService
     Task<VehicleDto?> GetByIdAsync(int id);
     Task<VehicleDto?> CreateAsync(CreateVehicleDto createVehicleDto);
     Task<bool> DeleteAsync(int id);
+    Task<UpdateVehicleResult> UpdateAsync(int vehicleId, UpdateVehicleDto updateVehicleDto);
 }
