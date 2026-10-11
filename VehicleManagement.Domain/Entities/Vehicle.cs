@@ -8,6 +8,6 @@ public class Vehicle
     public required int ManufactureYear { get; set; }
     public required int Mileage { get; set; }
     public required decimal Price { get; set; }
-    public required int DealershipId { get; set; }
+    public int DealershipId { get; set; }
     public Dealership Dealership { get; set; } = null!;
 }
