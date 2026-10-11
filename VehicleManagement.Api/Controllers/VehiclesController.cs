@@ -38,4 +38,22 @@ public class VehiclesController : ControllerBase
 
         return Ok(vehicle);
     }
+
+    [HttpPost]
+    public async Task<ActionResult<VehicleDto?>> Create(CreateVehicleDto createVehicleDto)
+    {
+        var vehicle = await _vehicleService.CreateAsync(createVehicleDto);
+
+        if (vehicle is null)
+        {
+            return BadRequest("Dealership does not exist.");
+        }
+
+
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = vehicle.VehicleId },
+            vehicle
+        );
+    }
 }

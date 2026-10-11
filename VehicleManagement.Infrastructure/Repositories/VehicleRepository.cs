@@ -26,4 +26,12 @@ public class VehicleRepository : IVehicleRepository
         return await _context.Vehicles
         .FirstOrDefaultAsync(vehicle => vehicle.VehicleId == id);
     }
+
+    public async Task<Vehicle> CreateAsync(Vehicle vehicle)
+    {
+        _context.Vehicles.Add(vehicle);
+        await _context.SaveChangesAsync();
+
+        return vehicle;
+    }
 }
