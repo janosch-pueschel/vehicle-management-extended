@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using VehicleManagement.Application.DTOs;
 using VehicleManagement.Application.Interfaces;
-using VehicleManagement.Application.Services;
-using VehicleManagement.Domain.Entities;
 
 [ApiController]
 [Route("api/vehicles")]
@@ -15,7 +14,7 @@ public class VehiclesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Vehicle>>> GetAll()
+    public async Task<ActionResult<List<VehicleDto>>> GetAll()
     {
         var vehicles = await _vehicleService.GetAllAsync();
 

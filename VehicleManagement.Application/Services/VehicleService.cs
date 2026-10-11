@@ -1,3 +1,4 @@
+using VehicleManagement.Application.DTOs;
 using VehicleManagement.Application.Interfaces;
 using VehicleManagement.Domain.Entities;
 
@@ -12,8 +13,18 @@ public class VehicleService : IVehicleService
         _repository = repository;
     }
 
-    public Task<List<Vehicle>> GetAllAsync()
+    public async Task<List<VehicleDto>> GetAllAsync()
     {
-        return _repository.GetAllAsync();
+        var vehicles = await _repository.GetAllAsync();
+
+        return vehicles.Select(vehicle => new VehicleDto(
+            vehicle.VehicleId,
+            vehicle.Brand,
+            vehicle.Model,
+            vehicle.ManufactureYear,
+            vehicle.Mileage,
+            vehicle.Price,
+            vehicle.DealershipId
+        )).ToList();
     }
 }
