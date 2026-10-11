@@ -20,4 +20,22 @@ public class VehiclesController : ControllerBase
 
         return Ok(vehicles);
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<VehicleDto?>> GetById(int id)
+    {
+        if (id <= 0)
+        {
+            return BadRequest("Vehicle ID must be greater than zero.");
+        }
+
+        var vehicle = await _vehicleService.GetByIdAsync(id);
+
+        if (vehicle is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(vehicle);
+    }
 }

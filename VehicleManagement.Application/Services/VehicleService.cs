@@ -27,4 +27,24 @@ public class VehicleService : IVehicleService
             vehicle.DealershipId
         )).ToList();
     }
+
+    public async Task<VehicleDto?> GetByIdAsync(int id)
+    {
+        var vehicle = await _repository.GetByIdAsync(id);
+
+        if (vehicle is null)
+        {
+            return null;
+        }
+
+        return new VehicleDto(
+            vehicle.VehicleId,
+            vehicle.Brand,
+            vehicle.Model,
+            vehicle.ManufactureYear,
+            vehicle.Mileage,
+            vehicle.Price,
+            vehicle.DealershipId
+        );
+    }
 }

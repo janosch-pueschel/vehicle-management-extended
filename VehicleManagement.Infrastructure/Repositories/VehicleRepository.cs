@@ -20,4 +20,10 @@ public class VehicleRepository : IVehicleRepository
             .AsNoTracking()
             .ToListAsync();
     }
+
+    public async Task<Vehicle?> GetByIdAsync(int id)
+    {
+        return await _context.Vehicles
+        .FirstOrDefaultAsync(vehicle => vehicle.VehicleId == id);
+    }
 }
