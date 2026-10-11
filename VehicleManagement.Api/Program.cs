@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using VehicleManagement.Application.Interfaces;
+using VehicleManagement.Application.Services;
 using VehicleManagement.Infrastructure.Persistence;
+using VehicleManagement.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +32,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         });
     }
 });
+
+builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
+builder.Services.AddScoped<VehicleService>();
 
 var app = builder.Build();
 
