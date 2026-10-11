@@ -82,4 +82,9 @@ public class VehicleService : IVehicleService
             vehicle.DealershipId
         );
     }
+
+    public Task<bool> DeleteAsync(int id)
+    {
+        return _vehicleRepository.DeleteAsync(id);
+    }
 }

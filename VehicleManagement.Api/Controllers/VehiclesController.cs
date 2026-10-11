@@ -56,4 +56,22 @@ public class VehiclesController : ControllerBase
             vehicle
         );
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        if (id <= 0)
+        {
+            return BadRequest("Vehicle ID must be greater than zero.");
+        }
+
+        var vehicleDeleted = await _vehicleService.DeleteAsync(id);
+
+        if (!vehicleDeleted)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
 }

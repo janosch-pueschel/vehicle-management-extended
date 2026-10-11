@@ -34,4 +34,11 @@ public class VehicleRepository : IVehicleRepository
 
         return vehicle;
     }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var deletedCount = await _context.Vehicles.Where(vehicle => vehicle.VehicleId == id).ExecuteDeleteAsync();
+
+        return deletedCount > 0;
+    }
 }
