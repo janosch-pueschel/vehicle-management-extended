@@ -24,6 +24,7 @@ public class VehicleRepository : IVehicleRepository
     public async Task<Vehicle?> GetByIdAsync(int id)
     {
         return await _context.Vehicles
+        .AsNoTracking()
         .FirstOrDefaultAsync(vehicle => vehicle.VehicleId == id);
     }
 
