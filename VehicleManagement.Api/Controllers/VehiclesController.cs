@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using VehicleManagement.Application.Interfaces;
 using VehicleManagement.Application.Services;
 using VehicleManagement.Domain.Entities;
 
@@ -6,9 +7,9 @@ using VehicleManagement.Domain.Entities;
 [Route("api/vehicles")]
 public class VehiclesController : ControllerBase
 {
-    private readonly VehicleService _vehicleService;
+    private readonly IVehicleService _vehicleService;
 
-    public VehiclesController(VehicleService vehicleService)
+    public VehiclesController(IVehicleService vehicleService)
     {
         _vehicleService = vehicleService;
     }

@@ -3,7 +3,7 @@ using VehicleManagement.Domain.Entities;
 
 namespace VehicleManagement.Application.Services;
 
-public class VehicleService
+public class VehicleService : IVehicleService
 {
     private readonly IVehicleRepository _repository;
 

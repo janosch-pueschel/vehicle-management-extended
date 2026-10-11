@@ -33,8 +33,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     }
 });
 
+builder.Services.AddScoped<IVehicleService, VehicleService>();
+
 builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
-builder.Services.AddScoped<VehicleService>();
 
 var app = builder.Build();
 
