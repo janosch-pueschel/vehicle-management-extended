@@ -11,10 +11,24 @@ builder.Services.AddOpenApi();
 
 // Register PostgreSQL and EF Core
 builder.Services.AddDbContext<AppDbContext>(options =>
+{
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")
-    )
-);
+    );
+
+    if (builder.Environment.IsDevelopment())
+    {
+        options.UseSeeding((context, _) =>
+        {
+            DbSeeder.Seed((AppDbContext)context);
+        });
+
+        options.UseAsyncSeeding((context, _, cancellationToken) =>
+        {
+            return DbSeeder.SeedAsync((AppDbContext)context);
+        });
+    }
+});
 
 var app = builder.Build();
 
