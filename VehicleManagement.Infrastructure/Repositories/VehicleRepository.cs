@@ -14,10 +14,17 @@ public class VehicleRepository : IVehicleRepository
         _context = context;
     }
 
-    public async Task<List<Vehicle>> GetAllAsync(int page, int pageSize)
+    public async Task<List<Vehicle>> GetAllAsync(int page, int pageSize, string? brand)
     {
-        return await _context.Vehicles
-        .AsNoTracking()
+        var vehicles = _context.Vehicles.AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(brand))
+        {
+            vehicles = vehicles.Where(vehicle => vehicle.Brand == brand);
+        }
+
+
+        return await vehicles
         .OrderBy(vehicle => vehicle.VehicleId)
         .Skip((page - 1) * pageSize)
         .Take(pageSize)

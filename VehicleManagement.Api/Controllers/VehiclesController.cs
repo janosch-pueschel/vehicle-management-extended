@@ -15,7 +15,11 @@ public class VehiclesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<VehicleDto>>> GetAll([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "pageSize")] int pageSize = 20)
+    public async Task<ActionResult<List<VehicleDto>>> GetAll(
+        [FromQuery(Name = "page")] int page = 1,
+        [FromQuery(Name = "pageSize")] int pageSize = 20,
+        [FromQuery(Name = "brand")] string? brand = null
+        )
     {
         if (pageSize > 100 || pageSize < 1)
         {
@@ -27,7 +31,7 @@ public class VehiclesController : ControllerBase
             return BadRequest("Page must be greater than 0.");
         }
 
-        var vehicles = await _vehicleService.GetAllAsync(page, pageSize);
+        var vehicles = await _vehicleService.GetAllAsync(page, pageSize, brand);
 
         return Ok(vehicles);
     }
