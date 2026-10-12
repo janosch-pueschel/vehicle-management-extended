@@ -14,11 +14,14 @@ public class VehicleRepository : IVehicleRepository
         _context = context;
     }
 
-    public async Task<List<Vehicle>> GetAllAsync()
+    public async Task<List<Vehicle>> GetAllAsync(int page, int pageSize)
     {
         return await _context.Vehicles
-            .AsNoTracking()
-            .ToListAsync();
+        .AsNoTracking()
+        .OrderBy(vehicle => vehicle.VehicleId)
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
+        .ToListAsync();
     }
 
     public async Task<Vehicle?> GetByIdAsync(int id)

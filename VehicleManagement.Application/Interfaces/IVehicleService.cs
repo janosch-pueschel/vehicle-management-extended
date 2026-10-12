@@ -5,7 +5,7 @@ namespace VehicleManagement.Application.Interfaces;
 
 public interface IVehicleService
 {
-    Task<List<VehicleDto>> GetAllAsync();
+    Task<List<VehicleDto>> GetAllAsync(int page, int pageSize);
     Task<VehicleDto?> GetByIdAsync(int id);
     Task<VehicleDto?> CreateAsync(CreateVehicleDto createVehicleDto);
     Task<bool> DeleteAsync(int id);

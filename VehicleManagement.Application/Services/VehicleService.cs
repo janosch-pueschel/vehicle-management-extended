@@ -17,9 +17,9 @@ public class VehicleService : IVehicleService
         _dealershipRepository = dealershipRepository;
     }
 
-    public async Task<List<VehicleDto>> GetAllAsync()
+    public async Task<List<VehicleDto>> GetAllAsync(int page, int pageSize)
     {
-        var vehicles = await _vehicleRepository.GetAllAsync();
+        var vehicles = await _vehicleRepository.GetAllAsync(page, pageSize);
 
         return vehicles.Select(vehicle => new VehicleDto(
             vehicle.VehicleId,
