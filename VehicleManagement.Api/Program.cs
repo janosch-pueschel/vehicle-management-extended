@@ -9,7 +9,6 @@ builder.Host.UseSerilog((context, configuration) =>
 {
     configuration
         .MinimumLevel.Information()
-        .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
         .WriteTo.Console();
 });
 
