@@ -14,7 +14,16 @@ public class VehiclesController : ControllerBase
         _vehicleService = vehicleService;
     }
 
+    /// <summary>
+    /// Returns a paginated list of vehicles, optionally filtered by brand.
+    /// </summary>
+    /// <param name="page">Page number (default: 1).</param>
+    /// <param name="pageSize">Number of vehicles per page (default: 20, maximum: 100).</param>
+    /// <param name="brand">Optional brand filter.</param>
+    /// <returns>A list of vehicles matching the specified criteria.</returns>
     [HttpGet]
+    [ProducesResponseType(typeof(List<VehicleDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<List<VehicleDto>>> GetAll(
         [FromQuery(Name = "page")] int page = 1,
         [FromQuery(Name = "pageSize")] int pageSize = 20,
@@ -36,7 +45,18 @@ public class VehiclesController : ControllerBase
         return Ok(vehicles);
     }
 
+
+    /// <summary>
+    /// Returns a vehicle by its ID.
+    /// </summary>
+    /// <param name="id">The vehicle ID.</param>
+    /// <returns>The requested vehicle.</returns>
+    /// <response code="400">Invalid vehicle ID.</response>
+    /// <response code="404">Vehicle not found.</response>
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(VehicleDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<VehicleDto?>> GetById(int id)
     {
         if (id <= 0)
@@ -54,7 +74,18 @@ public class VehiclesController : ControllerBase
         return Ok(vehicle);
     }
 
+    /// <summary>
+    /// Creates a new vehicle.
+    /// </summary>
+    /// <param name="createVehicleDto">
+    /// The vehicle data used to create a new vehicle.
+    /// </param>
+    /// <returns>The newly created vehicle.</returns>
+    /// <response code="201">Vehicle successfully created.</response>
+    /// <response code="400">Invalid vehicle data or dealership.</response>
     [HttpPost]
+    [ProducesResponseType(typeof(VehicleDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<VehicleDto?>> Create(CreateVehicleDto createVehicleDto)
     {
         var vehicle = await _vehicleService.CreateAsync(createVehicleDto);
@@ -71,7 +102,17 @@ public class VehiclesController : ControllerBase
         );
     }
 
+    /// <summary>
+    /// Deletes a vehicle by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the vehicle to delete.</param>
+    /// <response code="204">Vehicle successfully deleted.</response>
+    /// <response code="400">Invalid vehicle ID.</response>
+    /// <response code="404">Vehicle not found.</response>
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
         if (id <= 0)
@@ -89,7 +130,19 @@ public class VehiclesController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Updates an existing vehicle.
+    /// </summary>
+    /// <param name="id">The ID of the vehicle to update.</param>
+    /// <param name="updateVehicleDto">The updated vehicle data.</param>
+    /// <returns>The updated vehicle.</returns>
+    /// <response code="200">Vehicle successfully updated.</response>
+    /// <response code="400">Invalid vehicle data, invalid ID, or dealership does not exist.</response>
+    /// <response code="404">Vehicle not found.</response>
     [HttpPut("{id}")]
+    [ProducesResponseType(typeof(VehicleDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<VehicleDto?>> Update(int id, UpdateVehicleDto updateVehicleDto)
     {
         if (id <= 0)
