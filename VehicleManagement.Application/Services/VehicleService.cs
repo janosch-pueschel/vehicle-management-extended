@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using VehicleManagement.Application.DTOs;
 using VehicleManagement.Application.Interfaces;
 using VehicleManagement.Application.Results;
@@ -9,12 +10,17 @@ public class VehicleService : IVehicleService
 {
     private readonly IVehicleRepository _vehicleRepository;
     private readonly IDealershipRepository _dealershipRepository;
+    private readonly ILogger<VehicleService> _logger;
 
-
-    public VehicleService(IVehicleRepository vehicleRepository, IDealershipRepository dealershipRepository)
+    public VehicleService(
+        IVehicleRepository vehicleRepository,
+        IDealershipRepository dealershipRepository,
+        ILogger<VehicleService> logger
+        )
     {
         _vehicleRepository = vehicleRepository;
         _dealershipRepository = dealershipRepository;
+        _logger = logger;
     }
 
     public async Task<List<VehicleDto>> GetAllAsync(int page, int pageSize, string? brand)
@@ -57,6 +63,13 @@ public class VehicleService : IVehicleService
         };
 
         var vehicle = await _vehicleRepository.CreateAsync(newVehicle);
+
+
+        _logger.LogInformation(
+            "Vehicle {VehicleId} created for dealership {DealershipId}",
+            vehicle.VehicleId,
+            vehicle.DealershipId
+        );
 
         return ToDto(vehicle);
     }
