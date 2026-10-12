@@ -22,5 +22,8 @@ public record CreateVehicleDto(
     decimal Price,
 
     [Range(1, int.MaxValue)]
-    int DealershipId
+    int DealershipId,
+
+    [RegularExpression(@".*\S.*")]
+    string? Color
 );

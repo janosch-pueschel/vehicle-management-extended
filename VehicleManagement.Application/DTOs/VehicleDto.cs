@@ -7,5 +7,6 @@ public record VehicleDto(
     int ManufactureYear,
     int Mileage,
     decimal Price,
-    int DealershipId
+    int DealershipId,
+    string? Color
 );

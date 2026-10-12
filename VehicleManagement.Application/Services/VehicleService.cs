@@ -21,15 +21,7 @@ public class VehicleService : IVehicleService
     {
         var vehicles = await _vehicleRepository.GetAllAsync(page, pageSize, brand);
 
-        return vehicles.Select(vehicle => new VehicleDto(
-            vehicle.VehicleId,
-            vehicle.Brand,
-            vehicle.Model,
-            vehicle.ManufactureYear,
-            vehicle.Mileage,
-            vehicle.Price,
-            vehicle.DealershipId
-        )).ToList();
+        return vehicles.Select(vehicle => ToDto(vehicle)).ToList();
     }
 
     public async Task<VehicleDto?> GetByIdAsync(int id)
@@ -41,15 +33,7 @@ public class VehicleService : IVehicleService
             return null;
         }
 
-        return new VehicleDto(
-            vehicle.VehicleId,
-            vehicle.Brand,
-            vehicle.Model,
-            vehicle.ManufactureYear,
-            vehicle.Mileage,
-            vehicle.Price,
-            vehicle.DealershipId
-        );
+        return ToDto(vehicle);
     }
 
     public async Task<VehicleDto?> CreateAsync(CreateVehicleDto createVehicleDto)
@@ -68,20 +52,13 @@ public class VehicleService : IVehicleService
             ManufactureYear = createVehicleDto.ManufactureYear,
             Mileage = createVehicleDto.Mileage,
             Price = createVehicleDto.Price,
-            DealershipId = createVehicleDto.DealershipId
+            DealershipId = createVehicleDto.DealershipId,
+            Color = createVehicleDto.Color
         };
 
         var vehicle = await _vehicleRepository.CreateAsync(newVehicle);
 
-        return new VehicleDto(
-            vehicle.VehicleId,
-            vehicle.Brand,
-            vehicle.Model,
-            vehicle.ManufactureYear,
-            vehicle.Mileage,
-            vehicle.Price,
-            vehicle.DealershipId
-        );
+        return ToDto(vehicle);
     }
 
     public Task<bool> DeleteAsync(int id)
@@ -106,7 +83,8 @@ public class VehicleService : IVehicleService
             ManufactureYear = updateVehicleDto.ManufactureYear,
             Mileage = updateVehicleDto.Mileage,
             Price = updateVehicleDto.Price,
-            DealershipId = updateVehicleDto.DealershipId
+            DealershipId = updateVehicleDto.DealershipId,
+            Color = updateVehicleDto.Color
         };
 
         var vehicle = await _vehicleRepository.UpdateAsync(updatedVehicle);
@@ -116,16 +94,22 @@ public class VehicleService : IVehicleService
             return new UpdateVehicleResult(UpdateVehicleStatus.VehicleNotFound);
         }
 
-        var storedVehicle = new VehicleDto(
-                    vehicle.VehicleId,
-                    vehicle.Brand,
-                    vehicle.Model,
-                    vehicle.ManufactureYear,
-                    vehicle.Mileage,
-                    vehicle.Price,
-                    vehicle.DealershipId
-                );
+        var storedVehicle = ToDto(vehicle);
 
         return new UpdateVehicleResult(UpdateVehicleStatus.Success, storedVehicle);
+    }
+
+    private static VehicleDto ToDto(Vehicle vehicle)
+    {
+        return new VehicleDto(
+            vehicle.VehicleId,
+            vehicle.Brand,
+            vehicle.Model,
+            vehicle.ManufactureYear,
+            vehicle.Mileage,
+            vehicle.Price,
+            vehicle.DealershipId,
+            vehicle.Color
+        );
     }
 }

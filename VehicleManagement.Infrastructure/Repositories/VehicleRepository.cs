@@ -68,6 +68,7 @@ public class VehicleRepository : IVehicleRepository
         existingVehicle.Mileage = vehicle.Mileage;
         existingVehicle.Price = vehicle.Price;
         existingVehicle.DealershipId = vehicle.DealershipId;
+        existingVehicle.Color = vehicle.Color;
 
         await _context.SaveChangesAsync();
 
