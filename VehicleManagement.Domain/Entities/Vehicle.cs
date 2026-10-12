@@ -10,4 +10,5 @@ public class Vehicle
     public required decimal Price { get; set; }
     public int DealershipId { get; set; }
     public Dealership Dealership { get; set; } = null!;
+    public string? Color { get; set; }
 }

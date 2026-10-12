@@ -62,6 +62,9 @@ namespace VehicleManagement.Infrastructure.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("brand");
 
+                    b.Property<string>("Color")
+                        .HasColumnType("text");
+
                     b.Property<int>("DealershipId")
                         .HasColumnType("integer")
                         .HasColumnName("dealership_id");
